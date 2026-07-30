@@ -15,7 +15,7 @@ nav:
   display_title: true
   display_post_title: true
   # Whether to fix navigation bar
-  fixed: false
+  fixed: true
 
 menu:
   Home: / || fas fa-home
@@ -52,8 +52,8 @@ code_blocks:
 # Formal:
 #   icon: link || the description || color
 social:
-  # fab fa-github: https://github.com/xxxxx || Github || '#24292e'
-  # fas fa-envelope: mailto:xxxxxx@gmail.com || Email || '#4a7dbe'
+  fab fa-github: https://github.com/Ch1aki7  || Github || '#24292e'
+  fas fa-envelope: mailto:zaphkielbinah3@gmail.com || Email || '#4a7dbe'
 
 # --------------------------------------
 # Image Settings
@@ -117,9 +117,9 @@ error_img:
 
 # A simple 404 page
 error_404:
-  enable: false
-  subtitle: 'Page Not Found'
-  background: /img/error-page.png
+  enable: true
+  subtitle: '页面似乎进入了另一条世界线'
+  background: /img/error_page.png
 
 post_meta:
   # Home Page
@@ -297,10 +297,10 @@ aside:
       enable: true
       icon: fab fa-github
       text: Follow Me
-      link: https://github.com/xxxxxx
+      link: https://github.com/Ch1aki7
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: Seek joy amidst sorrow.
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -482,7 +482,7 @@ math:
 search:
   # Choose: algolia_search / local_search / docsearch
   # leave it empty if you don't need search
-  use:
+  use: local_search
   placeholder:
 
   # Algolia Search
@@ -495,9 +495,9 @@ search:
     # Preload the search data when the page loads.
     preload: false
     # Show top n results per article, show all results by setting to -1
-    top_n_per_article: 1
+    top_n_per_article: 3
     # Unescape html strings to the readable one.
-    unescape: false
+    unescape: true
     # Enable pagination for search results
     pagination:
       enable: false
@@ -785,6 +785,17 @@ site_verification:
 #   scrollbar_color: "#49b1f5"
 #   meta_theme_color_light: "ffffff"
 #   meta_theme_color_dark: "#0d0d0d"
+theme_color:
+  enable: true
+  main: "#6C8CFF"
+  paginator: "#6C8CFF"
+  button_hover: "#8EA6FF"
+  text_selection: "#8098F9"
+  link_color: "#667EEA"
+  toc_color: "#6C8CFF"
+  scrollbar_color: "#6C8CFF"
+  meta_theme_color_light: "#F6F8FC"
+  meta_theme_color_dark: "#0D1117"
 
 # The user interface setting of category and tag page
 # Choose: index - same as Homepage UI / default - same as archives UI
@@ -921,7 +932,7 @@ clickShowText:
 # https://github.com/francoischalifour/medium-zoom
 # https://fancyapps.com/fancybox/
 # Leave it empty if you don't need lightbox
-lightbox:
+lightbox: medium_zoom
 
 # --------------------------------------
 # Tag Plugins settings
@@ -1023,9 +1034,9 @@ instantpage: false
 # Lazyload
 # https://github.com/verlok/vanilla-lazyload
 lazyload:
-  enable: false
+  enable: true
   # Use browser's native lazyload instead of vanilla-lazyload
-  native: false
+  native: true
   # Specify the field to use lazyload (site or post)
   field: site
   placeholder:
@@ -1058,7 +1069,7 @@ Open_Graph_meta:
 # Structured Data
 # https://developers.google.com/search/docs/guides/intro-structured-data
 structured_data:
-  enable: false
+  enable: true
   # Alternate name for the site, used in structured data
   # Format: ['name1', 'name2']
   alternate_name:
