@@ -172,7 +172,7 @@ subtitle:
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
     - El Psy Congroo.
-    - 欺骗这个世界
+    - 世界を騙せ。
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -300,7 +300,7 @@ aside:
       link: https://github.com/Ch1aki7
   card_announcement:
     enable: true
-    content: Seek joy amidst sorrow.
+    content: '🚧 This site is under continuous development.New articles and projects are added whenever inspiration strikes.'
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -1073,6 +1073,7 @@ inject:
     - <link rel="stylesheet" href="/css/custom-preloader.css">
   bottom:
     - <script src="/js/custom-preloader.js"></script>
+    - <script src="/js/custom-title.js"></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work
