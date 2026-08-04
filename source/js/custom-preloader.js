@@ -1,9 +1,31 @@
 (() => {
   const VIDEO_PATH = "/video/loading.webm";
-  const FADE_DURATION = 500;
+  const FADE_DURATION = 800;
+  const SESSION_KEY = "custom-preloader-played";
+
+  // Only show the preloader on the home page.
+  const isHomePage =
+    window.location.pathname === "/" ||
+    window.location.pathname === "/index.html";
+
+  if (!isHomePage) {
+    return;
+  }
+
+  // Play once per tab session, including when returning to the home page.
+  try {
+    if (window.sessionStorage.getItem(SESSION_KEY) === "true") {
+      return;
+    }
+
+    window.sessionStorage.setItem(SESSION_KEY, "true");
+  } catch (error) {
+    // Storage restrictions should not prevent the preloader from working.
+    console.warn("Preloader session state could not be saved:", error);
+  }
 
   // 兜底时间，防止视频加载失败后遮罩永久存在
-  const MAX_WAIT_TIME = 10000;
+  const MAX_WAIT_TIME = 5000;
 
   let pageLoaded = document.readyState === "complete";
   let videoEnded = false;

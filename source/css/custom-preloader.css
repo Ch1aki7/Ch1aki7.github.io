@@ -2,26 +2,26 @@
   position: fixed;
   inset: 0;
   z-index: 999999;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
+  overflow: hidden;
   background: #111827;
 
   opacity: 1;
   visibility: visible;
-
-  overflow: hidden;
+  transform: scale(1);
 
   transition:
-    opacity 0.45s ease,
-    visibility 0.45s ease;
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    visibility 0s linear 0.8s;
 }
 
 #custom-preloader.is-hidden {
   opacity: 0;
   visibility: hidden;
+  transform: scale(1.03);
   pointer-events: none;
 }
 
