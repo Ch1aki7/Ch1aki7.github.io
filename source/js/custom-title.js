@@ -7,11 +7,13 @@
   const VISIBILITY_PRIORITY = 100;
   const PRELOADER_PRIORITY = 80;
   const TYPEWRITER_PRIORITY = 20;
+  const READING_PROGRESS_PRIORITY = 10;
 
   let baseTitle = document.title;
   let restoreTimer = null;
   let typingTimer = null;
   let typewriterHasRun = false;
+  let readingProgressCleanup = null;
   const states = new Map();
 
   const renderTitle = () => {
@@ -98,6 +100,71 @@
     typeNextCharacter();
   };
 
+  const clearReadingProgress = () => {
+    readingProgressCleanup?.();
+    readingProgressCleanup = null;
+    window.customTitleController.clearState("reading-progress");
+  };
+
+  const initializeReadingProgress = () => {
+    clearReadingProgress();
+
+    if (!document.getElementById("article-container")) {
+      return;
+    }
+
+    let animationFrame = null;
+
+    const updateReadingProgress = () => {
+      const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      );
+      const scrollableHeight = Math.max(
+        0,
+        documentHeight - window.innerHeight
+      );
+      const currentTop = window.scrollY || document.documentElement.scrollTop;
+      const progress =
+        scrollableHeight > 0
+          ? Math.max(
+              0,
+              Math.min(100, Math.round((currentTop / scrollableHeight) * 100))
+            )
+          : 100;
+
+      window.customTitleController.setState(
+        "reading-progress",
+        `[${progress}%] ${window.customTitleController.getBaseTitle()}`,
+        READING_PROGRESS_PRIORITY
+      );
+      animationFrame = null;
+    };
+
+    const scheduleReadingProgressUpdate = () => {
+      if (animationFrame !== null) {
+        return;
+      }
+
+      animationFrame = window.requestAnimationFrame(updateReadingProgress);
+    };
+
+    window.addEventListener("scroll", scheduleReadingProgressUpdate, {
+      passive: true
+    });
+    window.addEventListener("resize", scheduleReadingProgressUpdate);
+    scheduleReadingProgressUpdate();
+
+    readingProgressCleanup = () => {
+      window.removeEventListener("scroll", scheduleReadingProgressUpdate);
+      window.removeEventListener("resize", scheduleReadingProgressUpdate);
+
+      if (animationFrame !== null) {
+        window.cancelAnimationFrame(animationFrame);
+      }
+    };
+  };
+
   const handleVisibilityChange = () => {
     window.clearTimeout(restoreTimer);
 
@@ -153,20 +220,23 @@
   document.addEventListener("pjax:complete", () => {
     const nextPageTitle = document.title;
     stopTypewriter(true);
+    clearReadingProgress();
     window.customTitleController.setBaseTitle(nextPageTitle);
+    initializeReadingProgress();
     startTypewriter();
   });
 
-  const startInitialTypewriter = () => {
+  const initializePageTitleEffects = () => {
+    initializeReadingProgress();
     startTypewriter();
   };
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", startInitialTypewriter, {
+    document.addEventListener("DOMContentLoaded", initializePageTitleEffects, {
       once: true
     });
   } else {
-    startInitialTypewriter();
+    initializePageTitleEffects();
   }
 
   if (document.hidden) {
