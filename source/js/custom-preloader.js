@@ -30,6 +30,26 @@
   let pageLoaded = document.readyState === "complete";
   let videoEnded = false;
   let hidden = false;
+  let preloaderActive = false;
+
+  const setPreloaderActive = (active) => {
+    if (preloaderActive === active) {
+      return;
+    }
+
+    preloaderActive = active;
+    window.customPreloaderActive = active;
+    window.dispatchEvent(
+      new CustomEvent(`custom-preloader:${active ? "show" : "hide"}`)
+    );
+  };
+
+  const removePreloader = (preloader) => {
+    window.setTimeout(() => {
+      preloader.remove();
+      setPreloaderActive(false);
+    }, FADE_DURATION);
+  };
 
   const hidePreloader = () => {
     if (hidden) {
@@ -50,10 +70,7 @@
     }
 
     preloader.classList.add("is-hidden");
-
-    window.setTimeout(() => {
-      preloader.remove();
-    }, FADE_DURATION);
+    removePreloader(preloader);
   };
 
   const forceHidePreloader = () => {
@@ -70,10 +87,7 @@
     }
 
     preloader.classList.add("is-hidden");
-
-    window.setTimeout(() => {
-      preloader.remove();
-    }, FADE_DURATION);
+    removePreloader(preloader);
   };
 
   const createPreloader = () => {
@@ -99,6 +113,7 @@
     `;
 
     document.body.prepend(preloader);
+    setPreloaderActive(true);
 
     const video = document.getElementById("custom-preloader-video");
 
