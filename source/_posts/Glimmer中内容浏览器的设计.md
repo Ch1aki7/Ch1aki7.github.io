@@ -1,15 +1,15 @@
 ---
 title: Glimmer中内容浏览器的设计
-cover: cover.png
+cover: img/cover/Glimmer.png
 top_img: false
 toc: true
 aside: true
 date: 2026-08-05 10:54:29
 updated: 2026-08-05 10:54:29
 categories: 游戏引擎
-tags: 
-- 引擎开发
-- 资产管理
+tags:
+  - 引擎开发
+  - 资产管理
 description: 在编辑器内提供文件系统浏览能力，支持导航 assets 目录、按类型区分文件图标、双击加载场景、拖拽 `.glimmer` 到视口即打开。
 keywords:
 ---
