@@ -12,6 +12,7 @@ tags:
 description: 使用 GraphView 读取 Unity 构建出来的 AssetBundle，显示每个包的大小、包含的资源和依赖关系，将其制作成节点图工具。
 abbrlink: 7824cc20
 date: 2026-07-08 13:07:29
+updated: 2026-07-09 13:37:28
 keywords:
 ---
 

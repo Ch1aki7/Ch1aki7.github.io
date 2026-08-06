@@ -12,6 +12,7 @@ tags:
 description: 关于使用Unity内置的性能分析工具Unity Profiler进行的一次具体项目GC定位与修复。
 abbrlink: ef509b4
 date: 2026-06-10 16:03:45
+updated: 2026-06-10 16:03:45
 keywords:
 ---
 
