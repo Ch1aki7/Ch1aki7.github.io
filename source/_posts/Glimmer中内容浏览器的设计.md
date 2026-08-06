@@ -4,17 +4,18 @@ cover: img/cover/Glimmer.png
 top_img: false
 toc: true
 aside: true
-date: 2026-08-05 10:54:29
-updated: 2026-08-05 10:54:29
 categories: 游戏引擎
 tags:
   - 引擎开发
   - 资产管理
-description: 在编辑器内提供文件系统浏览能力，支持导航 assets 目录、按类型区分文件图标、双击加载场景、拖拽 `.glimmer` 到视口即打开。
+description: "在编辑器内提供文件系统浏览能力，支持导航 assets 目录、按类型区分文件图标、双击加载场景、拖拽\_`.glimmer`\_到视口即打开。"
+abbrlink: 468bd775
+date: 2026-08-05 10:54:29
+updated: 2026-08-05 10:54:29
 keywords:
 ---
 
-![](cover.png)
+![](cover_468bd775.png)
 
 ## 架构设计
 

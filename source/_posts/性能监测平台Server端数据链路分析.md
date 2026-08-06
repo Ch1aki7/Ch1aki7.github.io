@@ -1,19 +1,20 @@
 ---
 title: 性能监测平台Server端数据链路分析
-date: 2026-08-04 10:36:14
-updated: 2026-08-04 13:37:28
 categories: 工作记录
 tags:
   - Server
   - Debug
-cover: cover.png
+cover: cover_1288420a.png
 top_img: false
 description: 根据Edog性能监测平台进行一些调试与分析。
-keywords:
 toc: true
 aside: true
+abbrlink: 1288420a
+date: 2026-08-04 10:36:14
+updated: 2026-08-04 13:37:28
+keywords:
 ---
-![](cover.png)
+![](cover_1288420a.png)
 
 经初步分析，完整的数据链路如下：
 

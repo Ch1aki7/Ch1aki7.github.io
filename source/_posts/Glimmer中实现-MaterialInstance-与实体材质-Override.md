@@ -1,18 +1,19 @@
 ---
 title: Glimmer中实现 MaterialInstance 与实体材质 Override
-cover: cover.png
+cover: cover_4d26f4b.png
 top_img: false
 toc: true
 aside: true
-date: 2026-08-05 17:41:35
 categories: 游戏引擎
 tags:
   - 引擎开发
   - 资产管理
 description: 在debug时调整场景实体上的mat参数时导致我原mat资产git diff了，十分不爽，故添加此功能。
+abbrlink: 4d26f4b
+date: 2026-08-05 17:41:35
 keywords:
 ---
-![](cover.png)
+![](cover_4d26f4b.png)
 
 ## 建设目的
 

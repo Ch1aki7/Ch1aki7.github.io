@@ -14,11 +14,15 @@ timezone: 'Asia/Shanghai'
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
 url: https://Ch1aki7.github.io
-permalink: posts/:name/
+permalink: posts/:abbrlink/
 permalink_defaults:
 pretty_urls:
   trailing_index: false
   trailing_html: false
+
+abbrlink:
+  alg: crc32
+  rep: hex
 
 # Directory
 source_dir: source

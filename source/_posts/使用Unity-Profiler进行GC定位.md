@@ -4,13 +4,14 @@ cover: img/cover/unity.png
 top_img: false
 toc: true
 aside: true
-date: 2026-06-10 16:03:45
 categories: 工作记录
 tags:
   - UnityProfiler
   - 性能优化
   - GC
 description: 关于使用Unity内置的性能分析工具Unity Profiler进行的一次具体项目GC定位与修复。
+abbrlink: ef509b4
+date: 2026-06-10 16:03:45
 keywords:
 ---
 
