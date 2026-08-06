@@ -101,7 +101,7 @@ footer_img: false
 # Website Background
 # Can set it to color, image URL or an array containing colors and/or image URLs
 # If an array is provided, a random background will be selected from the array on each load
-background: '#eef0f7'
+background:
 
 cover:
   # Disable the cover or not
@@ -1076,9 +1076,6 @@ inject:
   bottom:
     - <script src="/js/custom-preloader.js"></script>
     - <script src="/js/custom-title.js"></script>
-    - <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
-    - <script src="https://cdn.jsdelivr.net/npm/vanta@0.5.24/dist/vanta.trunk.min.js"></script>
-    - <script src="/js/custom-vanta-trunk.js"></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work
