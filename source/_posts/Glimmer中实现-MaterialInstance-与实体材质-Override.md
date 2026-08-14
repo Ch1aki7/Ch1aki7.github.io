@@ -11,7 +11,7 @@ tags:
 description: 在debug时调整场景实体上的mat参数时导致我原mat资产git diff了，十分不爽，故添加此功能。
 abbrlink: 4d26f4b
 date: 2026-08-05 17:41:35
-update: 2026-08-05 17:41:35
+updated: 2026-08-05 17:41:35
 keywords:
 ---
 ![](cover_4d26f4b.png)

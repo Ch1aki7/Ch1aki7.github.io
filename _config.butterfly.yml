@@ -308,7 +308,7 @@ aside:
     # If set 0 will show all
     limit: 5
     # Sort: date / updated
-    sort: date
+    sort: updated
     sort_order:
   card_newest_comments:
     enable: false
