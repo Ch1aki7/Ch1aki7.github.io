@@ -36,7 +36,7 @@ menu:
 code_blocks:
   # Code block theme: darker / pale night / light / ocean / false
   theme: light
-  macStyle: false
+  macStyle: true
   # Code block height limit (unit: px)
   height_limit: false
   word_wrap: false
@@ -308,7 +308,7 @@ aside:
     # If set 0 will show all
     limit: 5
     # Sort: date / updated
-    sort: updated
+    sort: date
     sort_order:
   card_newest_comments:
     enable: false

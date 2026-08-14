@@ -1,6 +1,7 @@
 ---
 title: {{ title }}
 date: {{ date }}
+update: {{ date }}
 categories:
 tags:
 cover: cover.png

@@ -11,6 +11,7 @@ tags:
 description: 为 Glimmer 的 3D 渲染器加入了真正的 GPU Instancing，并优化了 MaterialInstance 的解析流程。
 abbrlink: 1eddf29f
 date: 2026-08-07 15:43:45
+update: 2026-08-07 15:43:45
 keywords:
 ---
 
