@@ -1,5 +1,5 @@
 (() => {
-  const VIDEO_PATH = "/video/loading.webm";
+  const VIDEO_PATH = "/video/c11.mp4";
   const FADE_DURATION = 800;
   const SESSION_KEY = "custom-preloader-played";
 
