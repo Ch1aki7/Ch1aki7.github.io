@@ -1,6 +1,6 @@
 ---
 title: Glimmer中实现方向光 Shadow Map 与 CSM
-cover: cover_745aefd8.png
+cover: cover_745aefd8.gif
 top_img: false
 toc: true
 aside: true
@@ -15,9 +15,10 @@ description: 记录在Glimmer中实现Shadow Map和级联阴影CSM的过程。
 keywords:
 katex: true
 ---
-![](cover_745aefd8.png)
 
 在实时渲染中，阴影的重要性是不言而喻的。
+
+![](IMG-20260910162836830.gif "确定物体空间关系")
 
 没有阴影时，物体虽然拥有正确的颜色、法线和高光，却很难与周围环境建立可靠的空间关系：模型究竟落在地面上，还是悬浮在半空？山体之间是否相互遮挡？方向光来自哪个方向？这些问题仅靠 PBR 参数无法回答。
 
@@ -373,6 +374,8 @@ return mix(nearVisibility, farVisibility, blend);
 
 ### Shadow Acne
 
+![](IMG-20260910155838402.gif "Shadow Acne 现象演示")
+
 Shadow Map 的深度是离散的。
 
 当一个倾斜表面的多个屏幕片元投影到同一个 Shadow Texel 时，它们会与相同的最近深度进行比较。一部分片元可能因为浮点误差或深度量化被错误判断为遮挡，形成密集的条纹，即 Shadow Acne。
@@ -597,7 +600,7 @@ Cascade 3 → 黄
 
 重叠区会按真实的 `smoothstep` 权重渐变，而不是显示一个伪造的调试边界。
 
-![](cover_745aefd8.png)
+![](cover_745aefd8.gif "运行时级联可视化演示")
 
 该开关是纯运行时状态，不写入 Scene YAML，也不会改变深度图、透明度或 Entity ID。
 

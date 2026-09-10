@@ -1,12 +1,12 @@
 ---
 title: HDR 线性渲染链与IBL
-cover: cover_508162ef.png
+cover: cover_508162ef.gif
 top_img: false
 toc: true
 aside: true
 abbrlink: 508162ef
 date: 2026-08-14 13:20:02
-update: 2026-08-14 13:20:02
+updated: 2026-08-14 13:20:02
 categories: 游戏引擎
 tags:
   - 引擎开发
@@ -15,8 +15,9 @@ description: 在Glimmer中探讨HDR和光照IBL原理以及应用。
 keywords:
 katex: true
 ---
-![](cover_508162ef.png "降低曝光后的表现")
+![](IMG-20260814125215632.png "降低曝光后的表现")
 
+![](cover_508162ef.gif "动态演示")
 ## 什么是HDR/HDRI
 
 HDR（High Dynamic Range，高动态范围）指的是**能够表示比普通图像更宽亮度范围的数据或技术**。
