@@ -1,0 +1,128 @@
+:root {
+  --custom-player-bg: rgba(255, 255, 255, 0.82);
+  --custom-player-bg-strong: rgba(255, 255, 255, 0.94);
+  --custom-player-border: rgba(186, 60, 60, 0.18);
+  --custom-player-text: #363636;
+  --custom-player-muted: #737373;
+  --custom-player-shadow: 0 10px 34px rgba(27, 31, 35, 0.18);
+}
+
+[data-theme="dark"] {
+  --custom-player-bg: rgba(22, 22, 26, 0.84);
+  --custom-player-bg-strong: rgba(22, 22, 26, 0.96);
+  --custom-player-border: rgba(244, 116, 102, 0.2);
+  --custom-player-text: #f1f1f1;
+  --custom-player-muted: #b9b9b9;
+  --custom-player-shadow: 0 10px 36px rgba(0, 0, 0, 0.42);
+}
+
+/* Preserve APlayer's fixed layout and add a translucent Butterfly skin. */
+.aplayer.aplayer-fixed {
+  z-index: 1002;
+  font-family: inherit;
+}
+
+.aplayer.aplayer-fixed .aplayer-body,
+.aplayer.aplayer-fixed .aplayer-list {
+  border: 1px solid var(--custom-player-border);
+  background: var(--custom-player-bg) !important;
+  box-shadow: var(--custom-player-shadow);
+  color: var(--custom-player-text);
+  -webkit-backdrop-filter: blur(16px) saturate(135%);
+  backdrop-filter: blur(16px) saturate(135%);
+}
+
+.aplayer.aplayer-fixed .aplayer-body {
+  overflow: hidden;
+  border-radius: 0 12px 0 0;
+}
+
+.aplayer.aplayer-fixed .aplayer-list {
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol {
+  background: transparent;
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol li {
+  border-top-color: var(--custom-player-border);
+  color: var(--custom-player-text);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol li:hover,
+.aplayer.aplayer-fixed .aplayer-list ol li.aplayer-list-light {
+  background: color-mix(in srgb, var(--theme-color) 22%, transparent) !important;
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol li .aplayer-list-index,
+.aplayer.aplayer-fixed .aplayer-list ol li .aplayer-list-author,
+.aplayer.aplayer-fixed .aplayer-info .aplayer-music .aplayer-author,
+.aplayer.aplayer-fixed .aplayer-info .aplayer-controller .aplayer-time {
+  color: var(--custom-player-muted);
+}
+
+.aplayer.aplayer-fixed .aplayer-info .aplayer-music .aplayer-title {
+  color: var(--custom-player-text);
+}
+
+.aplayer.aplayer-fixed .aplayer-info .aplayer-controller .aplayer-time .aplayer-icon path {
+  fill: var(--custom-player-muted);
+}
+
+.aplayer.aplayer-fixed .aplayer-miniswitcher {
+  border-radius: 0 12px 0 0;
+  background: var(--custom-player-bg-strong);
+}
+
+.aplayer.aplayer-fixed .aplayer-lrc::before,
+.aplayer.aplayer-fixed .aplayer-lrc::after {
+  display: none;
+}
+
+.aplayer.aplayer-fixed .aplayer-lrc p {
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.88);
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol::-webkit-scrollbar {
+  width: 5px;
+}
+
+.aplayer.aplayer-fixed .aplayer-list ol::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--theme-color);
+}
+
+.aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+  transition: left 0.28s ease, box-shadow 0.28s ease !important;
+}
+
+@media (max-width: 768px) {
+  .aplayer.aplayer-fixed,
+  .aplayer.aplayer-fixed .aplayer-body {
+    max-width: calc(100vw - 12px);
+  }
+
+  .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+    left: -66px !important;
+  }
+
+  .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover,
+  .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:focus-within {
+    left: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aplayer.aplayer-fixed *,
+  .aplayer.aplayer-fixed *::before,
+  .aplayer.aplayer-fixed *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

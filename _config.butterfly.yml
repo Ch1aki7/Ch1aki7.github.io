@@ -998,14 +998,14 @@ note:
 
 # https://github.com/MoOx/pjax
 pjax:
-  enable: false
+  enable: true
   # Exclude the specified pages from pjax, such as '/music/'
   exclude:
     # - /xxxxxx/
 
 # Inject the css and script (aplayer/meting)
 aplayerInject:
-  enable: false
+  enable: true
   per_page: true
 
 # Snackbar - Toast Notification
@@ -1073,9 +1073,13 @@ css_prefix: true
 inject:
   head:
     - <link rel="stylesheet" href="/css/custom-preloader.css">
+    - <link rel="stylesheet" href="/css/custom-aplayer.css">
   bottom:
+    - <script>window.meting_api="https://meting-api.saop.cc/api?server=:server&type=:type&id=:id&r=:r"</script>
+    - <meting-js class="no-destroy" id="18377839332" server="netease" type="playlist" fixed="true" mini="true" autoplay="false" loop="all" order="random" preload="none" volume="0.3" mutex="true" list-folded="true" list-max-height="36vh" storage-name="zaphkiel-global-player"></meting-js>
     - <script src="/js/custom-preloader.js"></script>
     - <script src="/js/custom-title.js"></script>
+    - <script src="/js/custom-aplayer.js"></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work
@@ -1099,8 +1103,8 @@ CDN:
     # activate_power_mode:
     # algolia_js:
     # algolia_search:
-    # aplayer_css:
-    # aplayer_js:
+    aplayer_css: https://registry.npmmirror.com/aplayer/latest/files/dist/APlayer.min.css
+    aplayer_js: https://registry.npmmirror.com/aplayer/latest/files/dist/APlayer.min.js
     # artalk_css:
     # artalk_js:
     # blueimp_md5:
@@ -1133,7 +1137,7 @@ CDN:
     # mathjax:
     # medium_zoom:
     # mermaid:
-    # meting_js:
+    meting_js: https://registry.npmmirror.com/meting/latest/files/dist/Meting.min.js
     # prismjs_autoloader:
     # prismjs_js:
     # prismjs_lineNumber_js:
