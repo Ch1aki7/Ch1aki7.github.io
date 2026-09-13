@@ -22,6 +22,29 @@
   height: 100%;
 }
 
+.kurisu-live2d-hitbox {
+  position: absolute;
+  z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.kurisu-live2d-hitbox-head {
+  top: 47%;
+  left: 30%;
+  width: 40%;
+  height: 19%;
+  border-radius: 48%;
+}
+
+.kurisu-live2d-hitbox-body {
+  top: 64%;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  border-radius: 42% 42% 0 0;
+}
+
 #kurisu-live2d-menu {
   --kurisu-accent: #cf365c;
   position: fixed;
