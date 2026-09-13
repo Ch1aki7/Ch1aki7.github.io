@@ -1074,12 +1074,17 @@ inject:
   head:
     - <link rel="stylesheet" href="/css/custom-preloader.css">
     - <link rel="stylesheet" href="/css/custom-aplayer.css">
+    - <link rel="stylesheet" href="/css/custom-live2d.css">
   bottom:
     - <script>window.meting_api="https://meting-api.saop.cc/api?server=:server&type=:type&id=:id&r=:r"</script>
     - <meting-js class="no-destroy" id="18377839332" server="netease" type="playlist" fixed="true" mini="true" autoplay="false" loop="all" order="random" preload="none" volume="0.3" mutex="true" list-folded="true" list-max-height="36vh" storage-name="zaphkiel-global-player"></meting-js>
     - <script src="/js/custom-preloader.js"></script>
     - <script src="/js/custom-title.js"></script>
     - <script src="/js/custom-aplayer.js"></script>
+    - <script src="https://registry.npmmirror.com/pixi.js/6.5.10/files/dist/browser/pixi.min.js"></script>
+    - <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+    - <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
+    - <script src="/js/kurisu-live2d.js?v=menu-4"></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work

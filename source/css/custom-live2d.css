@@ -1,0 +1,201 @@
+#kurisu-live2d-wrap {
+  position: fixed;
+  right: 12px;
+  bottom: 0;
+  width: min(360px, 32vw);
+  height: min(560px, 62vh);
+  z-index: 98;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+#kurisu-live2d-wrap.is-ready {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#kurisu-live2d-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#kurisu-live2d-menu {
+  --kurisu-accent: #cf365c;
+  position: fixed;
+  z-index: 10001;
+  display: none;
+  width: min(390px, calc(100vw - 24px));
+  max-height: min(560px, calc(100vh - 24px));
+  overflow: hidden;
+  color: #f7edf1;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(75, 17, 39, 0.92), rgba(18, 17, 28, 0.96));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+  font-size: 13px;
+  user-select: none;
+}
+
+#kurisu-live2d-menu.is-open {
+  display: block;
+  animation: kurisu-menu-in 0.16s ease-out;
+}
+
+.kurisu-menu-header,
+.kurisu-menu-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.kurisu-menu-header {
+  padding: 13px 14px 10px;
+}
+
+.kurisu-menu-header > div {
+  display: grid;
+  gap: 1px;
+}
+
+.kurisu-menu-header strong {
+  color: #fff;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.kurisu-menu-header small,
+.kurisu-menu-action small,
+.kurisu-menu-controls small {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 10px;
+}
+
+.kurisu-menu-close {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.72);
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.kurisu-menu-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 0 12px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.kurisu-menu-tabs button {
+  padding: 7px 4px;
+  color: rgba(255, 255, 255, 0.63);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.kurisu-menu-tabs button:hover,
+.kurisu-menu-tabs button.is-active {
+  color: #fff;
+  background: rgba(207, 54, 92, 0.34);
+}
+
+.kurisu-menu-panel {
+  display: none;
+  max-height: 390px;
+  padding: 10px 12px 12px;
+  overflow-y: auto;
+}
+
+.kurisu-menu-panel.is-active {
+  display: block;
+}
+
+.kurisu-menu-panel > p {
+  margin: 0 2px 9px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+}
+
+.kurisu-menu-grid,
+.kurisu-menu-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.kurisu-menu-action,
+.kurisu-menu-controls button {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 9px 10px;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: left;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+  cursor: pointer;
+}
+
+.kurisu-menu-action:hover,
+.kurisu-menu-controls button:hover,
+.kurisu-menu-controls button.is-active {
+  color: #fff;
+  border-color: rgba(235, 93, 127, 0.48);
+  background: rgba(207, 54, 92, 0.2);
+}
+
+.kurisu-menu-footer {
+  min-height: 36px;
+  padding: 7px 14px;
+  color: rgba(255, 255, 255, 0.55);
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  font-size: 10px;
+}
+
+.kurisu-menu-footer kbd {
+  padding: 2px 6px;
+  color: rgba(255, 255, 255, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: none;
+  font: inherit;
+}
+
+@keyframes kurisu-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 767px) {
+  #kurisu-live2d-wrap,
+  #kurisu-live2d-menu {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #kurisu-live2d-wrap {
+    transition: none;
+  }
+}
