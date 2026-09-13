@@ -1081,10 +1081,7 @@ inject:
     - <script src="/js/custom-preloader.js"></script>
     - <script src="/js/custom-title.js"></script>
     - <script src="/js/custom-aplayer.js"></script>
-    - <script src="https://registry.npmmirror.com/pixi.js/6.5.10/files/dist/browser/pixi.min.js"></script>
-    - <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-    - <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js"></script>
-    - <script src="/js/kurisu-live2d.js?v=interaction-3"></script>
+    - <script src="/js/kurisu-live2d.js?v=lifecycle-1"></script>
 
 # CDN Settings
 # Don't modify the following settings unless you know how they work

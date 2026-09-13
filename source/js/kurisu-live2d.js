@@ -4,6 +4,20 @@
   const MODEL_URL =
     "https://static.amadeus-web.top/live2dmodels/steinsGateKurisuNew/%E7%BA%A2%E8%8E%89%E6%A0%96.model3.json";
   const MIN_DESKTOP_WIDTH = 768;
+  const DEPENDENCIES = [
+    {
+      url: "https://registry.npmmirror.com/pixi.js/6.5.10/files/dist/browser/pixi.min.js",
+      ready: () => Boolean(window.PIXI),
+    },
+    {
+      url: "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js",
+      ready: () => Boolean(window.Live2DCubismCore),
+    },
+    {
+      url: "https://cdn.jsdelivr.net/npm/pixi-live2d-display@0.4.0/dist/cubism4.min.js",
+      ready: () => Boolean(window.PIXI?.live2d?.Live2DModel),
+    },
+  ];
   const MODEL_SCALE = 0.75;
   const HEAD_ANCHOR = {
     x: 0.5,
@@ -67,6 +81,9 @@
   const IDLE_MAX_DELAY = 60000;
   const MANUAL_LOCK_DURATION = 6000;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const desktopViewport = window.matchMedia(
+    `(min-width: ${MIN_DESKTOP_WIDTH}px)`
+  );
   const DEBUG_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
 
   let app;
@@ -87,6 +104,11 @@
   let activePriority = 0;
   let activeUntil = 0;
   let clickHistory = [];
+  let initializationPromise;
+  let cancelScheduledInitialization;
+  let siteInteractionsBound = false;
+  let mediaObserver;
+  let mediaObserverTimer;
   const triggerTimes = new Map();
   const boundAPlayers = new WeakSet();
   const boundAudioElements = new WeakSet();
@@ -112,7 +134,7 @@
 
   const updateFocus = (container) => {
     framePending = false;
-    if (!model || !focusEnabled) return;
+    if (!model || !focusEnabled || !desktopViewport.matches) return;
 
     const rect = container.getBoundingClientRect();
     const headX = rect.left + rect.width * HEAD_ANCHOR.x;
@@ -158,7 +180,7 @@
     lock = 0,
     force = false,
   } = {}) => {
-    if (!model || document.hidden) return false;
+    if (!model || document.hidden || !desktopViewport.matches) return false;
     if (!autoInteractionEnabled && priority < INTERACTION_PRIORITY.manual) return false;
 
     const now = Date.now();
@@ -446,7 +468,8 @@
   };
 
   const bindAPlayerInteractions = () => {
-    document.querySelectorAll(".aplayer audio").forEach(bindAudioElement);
+    const audioElements = document.querySelectorAll(".aplayer audio");
+    audioElements.forEach(bindAudioElement);
     const players = [
       ...(Array.isArray(window.aplayers) ? window.aplayers : []),
       ...Array.from(document.querySelectorAll("meting-js"), (element) =>
@@ -466,9 +489,34 @@
         });
       });
     });
+    return audioElements.length > 0 || players.length > 0;
+  };
+
+  const stopWatchingForAPlayer = () => {
+    mediaObserver?.disconnect();
+    mediaObserver = undefined;
+    window.clearTimeout(mediaObserverTimer);
+    mediaObserverTimer = undefined;
+  };
+
+  const watchForAPlayerInteractions = () => {
+    stopWatchingForAPlayer();
+    if (bindAPlayerInteractions()) return;
+
+    const metingElement = document.querySelector("meting-js");
+    const observationRoot = metingElement || document.body;
+    if (!observationRoot) return;
+
+    mediaObserver = new MutationObserver(() => {
+      if (bindAPlayerInteractions()) stopWatchingForAPlayer();
+    });
+    mediaObserver.observe(observationRoot, { childList: true, subtree: true });
+    mediaObserverTimer = window.setTimeout(stopWatchingForAPlayer, 10000);
   };
 
   const bindSiteInteractions = () => {
+    if (siteInteractionsBound) return;
+    siteInteractionsBound = true;
     ["pointerdown", "keydown", "wheel", "touchstart"].forEach((eventName) =>
       window.addEventListener(eventName, registerActivity, { passive: true })
     );
@@ -476,7 +524,7 @@
 
     document.addEventListener("pjax:complete", () => {
       reactForCurrentPage();
-      bindAPlayerInteractions();
+      watchForAPlayerInteractions();
     });
     document.addEventListener("pjax:error", () => {
       requestReaction("unhappy", {
@@ -503,7 +551,7 @@
         app?.stop();
         return;
       }
-      app?.start();
+      if (desktopViewport.matches) app?.start();
       registerActivity();
       if (hiddenAt && Date.now() - hiddenAt > 5 * 60000) {
         requestReaction("surprise", {
@@ -515,9 +563,7 @@
       }
     });
 
-    const mediaObserver = new MutationObserver(bindAPlayerInteractions);
-    mediaObserver.observe(document.body, { childList: true, subtree: true });
-    bindAPlayerInteractions();
+    watchForAPlayerInteractions();
   };
 
   const renderActionButtons = (kind, names) =>
@@ -825,18 +871,75 @@
     },
   };
 
-  const init = async () => {
-    if (
-      window.innerWidth < MIN_DESKTOP_WIDTH ||
-      document.getElementById("kurisu-live2d-wrap")
-    ) {
+  const loadScript = ({ url, ready }) => {
+    if (ready()) return Promise.resolve();
+
+    return new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${url}"]`);
+      const script = existing || document.createElement("script");
+      const rejectAndCleanUp = (message) => {
+        if (script.dataset.kurisuDependency === "true") script.remove();
+        reject(new Error(message));
+      };
+      const handleLoad = () => {
+        if (ready()) resolve();
+        else rejectAndCleanUp(`Dependency loaded without expected API: ${url}`);
+      };
+      const handleError = () => rejectAndCleanUp(`Failed to load: ${url}`);
+
+      script.addEventListener("load", handleLoad, { once: true });
+      script.addEventListener("error", handleError, { once: true });
+      if (!existing) {
+        script.src = url;
+        script.async = false;
+        script.dataset.kurisuDependency = "true";
+        document.head.appendChild(script);
+      }
+    });
+  };
+
+  const loadDependencies = async () => {
+    for (const dependency of DEPENDENCIES) {
+      if (!desktopViewport.matches) return;
+      await loadScript(dependency);
+    }
+  };
+
+  const setViewportActive = () => {
+    const container = document.getElementById("kurisu-live2d-wrap");
+    if (!desktopViewport.matches) {
+      cancelScheduledInitialization?.();
+      cancelScheduledInitialization = undefined;
+      window.clearTimeout(idleTimer);
+      closeContextMenu();
+      app?.stop();
+      container?.classList.remove("is-ready");
       return;
     }
 
+    if (!model) {
+      scheduleInitialization();
+      return;
+    }
+
+    fitModel(container);
+    updateFocus(container);
+    container.classList.add("is-ready");
+    if (!document.hidden) app?.start();
+    registerActivity();
+  };
+
+  const init = async () => {
+    if (!desktopViewport.matches || document.getElementById("kurisu-live2d-wrap")) {
+      return;
+    }
+
+    await loadDependencies();
+    if (!desktopViewport.matches) return;
+
     const Live2DModel = window.PIXI?.live2d?.Live2DModel;
     if (!window.PIXI || !Live2DModel || !window.Live2DCubismCore) {
-      console.warn("Kurisu Live2D: renderer dependencies are unavailable.");
-      return;
+      throw new Error("Renderer dependencies are unavailable.");
     }
 
     try {
@@ -886,10 +989,14 @@
       app.stage.addChild(model);
       fitModel(container);
       updateFocus(container);
-      container.classList.add("is-ready");
       bindSiteInteractions();
-      runVisitGreeting();
-      reactForCurrentPage({ initial: true });
+      if (desktopViewport.matches) {
+        container.classList.add("is-ready");
+        runVisitGreeting();
+        reactForCurrentPage({ initial: true });
+      } else {
+        app.stop();
+      }
       window.dispatchEvent(
         new CustomEvent("kurisu-live2d:ready", {
           detail: window.kurisuLive2d,
@@ -909,9 +1016,13 @@
         { passive: true }
       );
 
-      window.addEventListener("resize", () => fitModel(container), {
-        passive: true,
-      });
+      window.addEventListener(
+        "resize",
+        () => {
+          if (desktopViewport.matches) fitModel(container);
+        },
+        { passive: true }
+      );
     } catch (error) {
       console.error("Kurisu Live2D failed to load:", error);
       app?.destroy(true);
@@ -923,9 +1034,54 @@
     }
   };
 
+  function ensureInitialized() {
+    if (!desktopViewport.matches || model) return initializationPromise;
+    if (!initializationPromise) {
+      initializationPromise = init()
+        .catch((error) => {
+          console.error("Kurisu Live2D dependencies failed to load:", error);
+        })
+        .finally(() => {
+          initializationPromise = undefined;
+        });
+    }
+    return initializationPromise;
+  }
+
+  function scheduleInitialization() {
+    if (
+      !desktopViewport.matches ||
+      model ||
+      initializationPromise ||
+      cancelScheduledInitialization
+    ) {
+      return;
+    }
+
+    const start = () => {
+      cancelScheduledInitialization = undefined;
+      if (desktopViewport.matches) ensureInitialized();
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(start, { timeout: 2000 });
+      cancelScheduledInitialization = () => window.cancelIdleCallback(idleId);
+    } else {
+      const timerId = window.setTimeout(start, 600);
+      cancelScheduledInitialization = () => window.clearTimeout(timerId);
+    }
+  }
+
+  const startResponsiveLifecycle = () => {
+    desktopViewport.addEventListener("change", setViewportActive);
+    setViewportActive();
+  };
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init, { once: true });
+    document.addEventListener("DOMContentLoaded", startResponsiveLifecycle, {
+      once: true,
+    });
   } else {
-    init();
+    startResponsiveLifecycle();
   }
 })();
