@@ -1074,6 +1074,7 @@ inject:
   head:
     - <link rel="stylesheet" href="/css/custom-preloader.css">
     - <link rel="stylesheet" href="/css/custom-aplayer.css">
+    - <link rel="stylesheet" href="/css/inline-music.css">
     - <link rel="stylesheet" href="/css/custom-live2d.css">
   bottom:
     - <script>window.meting_api="https://meting-api.saop.cc/api?server=:server&type=:type&id=:id&r=:r"</script>

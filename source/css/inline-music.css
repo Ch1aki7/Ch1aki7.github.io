@@ -1,0 +1,11 @@
+.inline-music {
+  margin: 20px 0;
+}
+
+.inline-music meting-js { display: block; min-height: 90px; }
+.inline-music .aplayer {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.inline-music .aplayer .aplayer-list ol { max-height: 260px; }
