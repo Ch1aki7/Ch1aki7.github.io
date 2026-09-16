@@ -1,5 +1,5 @@
 ---
-title: Glimmer中内容浏览器的设计
+title: 「Glimmer」内容浏览器的设计
 cover: img/cover/Glimmer.png
 top_img: false
 toc: true
@@ -20,7 +20,7 @@ keywords: Glimmer, Content Browser, ImGui, AssetManager, EditorAssetFactory, 资
 本文按照 [Glimmer](https://github.com/Ch1aki7/Glimmer) `main` 分支更新，重点对应 2026 年 9 月 9 日的 Content Browser 改版（[`35235cf`](https://github.com/Ch1aki7/Glimmer/commit/35235cf)）。文中的早期界面截图用于说明演进过程，最新行为以仓库源码为准。
 {% endnote %}
 
-![](cover_468bd775.png "加入目录树后的早期 Content Browser")
+![](IMG-20260805110559099.png "加入目录树后的早期 Content Browser")
 
 Content Browser 最早只是编辑器里的文件入口：限定在 `assets/` 下浏览目录，根据扩展名显示图标，双击或拖拽 `.glimmer` 文件打开场景。
 

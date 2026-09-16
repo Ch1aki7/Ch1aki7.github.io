@@ -1,5 +1,5 @@
 ---
-title: 基于Shader-ABI的多Pass处理
+title: 「Glimmer」基于Shader-ABI的多Pass处理
 cover: cover_c218b63.gif
 top_img: false
 toc: true
@@ -218,7 +218,7 @@ gl_Position = u_ViewProjection * worldPosition;
 
 该 Pass 使用 `Cull: Front`，因此只留下外扩模型的背面壳层；随后 Forward Pass 使用 `Cull: Back` 绘制原表面。壳层从模型边缘露出的部分就成为轮廓。
 
-![](IMG-20260912205721209.png "法线外扩 Outline Pass 与 Toon Surface Pass 的组合效果")
+![](IMG-20260914092850351.png "法线外扩 Outline Pass 与 Toon Surface Pass 的组合效果")
 
 两个 Pass 都通过 Forward Fragment ABI 写出同一个 EntityID，所以点击轮廓仍然会选中原实体。Shadow Renderer 则没有展开材质的颜色 Pass，而是继续按基础材质的 Opaque、Mask、Blend 规则提交原始模型一次。这样 Outline 不会被重复写入四张级联阴影图，调整轮廓宽度也不会改变物体的阴影体积。
 
@@ -330,19 +330,19 @@ return GlimmerSampleScene(pixelUV);
 
 使用 `Resolution` 而不是写死宽高后，Viewport 缩放时像素块仍保持稳定的屏幕尺寸。
 
-![](IMG-20260912210010300.png "Pixelate：按屏幕像素网格量化 UV")
+![](IMG-20260914092850353.png "Pixelate：按屏幕像素网格量化 UV")
 
 ### Vignette
 
 Vignette 将 UV 移到屏幕中心，并用宽高比修正 X 方向，再根据中心距离平滑压暗边缘。如果忽略 Aspect Ratio，非正方形 Viewport 中的暗角会被拉成椭圆。
 
-![](IMG-20260912210033515.png "Vignette：按宽高比修正后的径向暗角")
+![](IMG-20260914092850360.png "Vignette：按宽高比修正后的径向暗角")
 
 ### Chromatic Aberration
 
 色差效果沿屏幕中心到当前像素的方向偏移红、蓝通道，绿色保留中心采样。偏移量以 `TexelSize` 表示，因此参数含义是接近固定像素距离，而不是随分辨率变化的固定 UV 距离。
 
-![](IMG-20260912210100641.png "Chromatic Aberration：红蓝通道沿径向错位")
+![](IMG-20260914092850369.png "Chromatic Aberration：红蓝通道沿径向错位")
 
 ### Wave Distortion
 
@@ -368,13 +368,13 @@ float outline = smoothstep(0.0004, 0.0025, depthDifference);
 
 它能覆盖场景中所有产生深度的物体，成本与屏幕分辨率相关，不需要额外绘制几何；但它只能看到深度不连续的边界，无法像法线外扩那样稳定控制单个材质的轮廓宽度，也看不到深度连续但法线突变的内部边缘。
 
-![](IMG-20260912210149835.png "Depth Outline：基于 Scene Depth 四邻域差分的屏幕空间描边")
+![](IMG-20260914092850378.png "Depth Outline：基于 Scene Depth 四邻域差分的屏幕空间描边")
 
 ### Film Grain
 
 Film Grain 以屏幕像素坐标和离散到 24 FPS 的时间作为噪声种子，再根据当前亮度调整颗粒强度。暗部颗粒稍强、亮部稍弱，并且不依赖额外噪声纹理。
 
-![](IMG-20260912210231550.png "Film Grain：随时间变化并按亮度调制的颗粒")
+![](IMG-20260914092850388.png "Film Grain：随时间变化并按亮度调制的颗粒")
 
 ## 小结
 

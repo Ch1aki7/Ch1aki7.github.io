@@ -1,5 +1,5 @@
 ---
-title: HDR 线性渲染链与IBL
+title: 「Glimmer」HDR 线性渲染链与IBL
 cover: cover_508162ef.gif
 top_img: false
 toc: true
@@ -15,7 +15,7 @@ description: 在Glimmer中探讨HDR和光照IBL原理以及应用。
 keywords:
 katex: true
 ---
-![](IMG-20260814125215632.png "降低曝光后的表现")
+![](IMG-20260814155143707.png "降低曝光后的表现")
 
 ![](cover_508162ef.gif "动态演示")
 ## 什么是HDR/HDRI

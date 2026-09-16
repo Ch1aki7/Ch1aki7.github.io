@@ -1,5 +1,5 @@
 ---
-title: Glimmer中实现方向光 Shadow Map 与 CSM
+title: 「Glimmer」实现方向光 Shadow Map 与 CSM
 cover: cover_745aefd8.gif
 top_img: false
 toc: true
@@ -17,7 +17,7 @@ katex: true
 ---
 
 在实时渲染中，阴影的重要性是不言而喻的。
-
+	
 ![](IMG-20260910162836830.gif "确定物体空间关系")
 
 没有阴影时，物体虽然拥有正确的颜色、法线和高光，却很难与周围环境建立可靠的空间关系：模型究竟落在地面上，还是悬浮在半空？山体之间是否相互遮挡？方向光来自哪个方向？这些问题仅靠 PBR 参数无法回答。

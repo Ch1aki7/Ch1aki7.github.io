@@ -1,5 +1,5 @@
 ---
-title: Glimmer中实现 MaterialInstance 与实体材质 Override
+title: 「Glimmer」实现 MaterialInstance 与实体材质 Override
 cover: cover_4d26f4b.png
 top_img: false
 toc: true

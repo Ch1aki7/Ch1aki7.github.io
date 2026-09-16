@@ -1,5 +1,5 @@
 ---
-title: 关于2D实体和3D实体的透明处理
+title: 「Glimmer」关于2D实体和3D实体的透明处理
 cover: img/cover/Glimmer.png
 top_img: false
 toc: true
@@ -35,13 +35,13 @@ FinalColor =
 
 其中，`SourceColor` 是当前正在绘制的物体颜色，`DestinationColor` 是 Framebuffer 中原有的背景颜色。因此，透明物体必须在需要透出的背景之后绘制，否则它只能与 Clear Color 或错误的背景内容混合。
 
-![](IMG-20260809135814495.png "Alpha Blending 中的 Source 与 Destination。当前片元颜色作为 Source，Framebuffer 中已有的颜色作为 Destination")
+![](IMG-20260810092856615.png "Alpha Blending 中的 Source 与 Destination。当前片元颜色作为 Source，Framebuffer 中已有的颜色作为 Destination")
 
 - 绿色方块是当前片元输出，即 Source；
 - 红色方块是颜色缓冲中已有内容，即 Destination；
 - Source 的 Alpha 为 `0.6`。
 
-![](IMG-20260809135845541.png "混合结果")
+![](IMG-20260810092856615-1.png "混合结果")
 
 ### 2D透明处理
 
@@ -59,7 +59,7 @@ vec4 finalColor = sampledColor * v_Color;
 3. 正确处理深度测试与深度写入；
 4. 必要时丢弃完全透明的像素。
 
-![](IMG-20260809135955973.png "错误透明顺序")
+![](IMG-20260810092856617.png "错误透明顺序")
 
 如果 Sprite 在天空盒之前绘制，透明像素会先与 Clear Color 混合；如果这些像素同时写入深度，之后绘制的天空盒还可能无法覆盖它们。
 
@@ -118,7 +118,7 @@ Opaque/Mask 3D
 
 在场景中测试带透明通道的 2D 纹理时，发现透明区域没有显示后方的天空盒，而是显示成了 Framebuffer 的 Clear Color。
 
-![](IMG-20260809123510569.png "位于3Dmesh上，看不出")
+![](IMG-20260810092856571.png "位于3Dmesh上，看不出")
 
 ![](IMG-20260809123558629.png "由于渲染顺序出错导致")
 
@@ -128,9 +128,9 @@ Opaque/Mask 3D
 
 通过RenderDoc抓帧验证得确实是渲染顺序的问题，从 RenderDoc 的 Event Browser 中可以看到，Renderer2D 的 Draw Call 发生在 Skybox Draw Call 之前。
 
-![](IMG-20260809123704655.png "2D渲染时，skybox尚未开始渲染，故错误留下了通道")
+![](IMG-20260810092856582.png "2D渲染时，skybox尚未开始渲染，故错误留下了通道")
 
-![](IMG-20260809123725788.png)
+![](IMG-20260810092856589.png)
 
 这就是问题的根本原因。
 
@@ -209,7 +209,7 @@ void Scene::RenderSprites(const glm::mat4& viewProjection)
 
 修复后的结果如下：
 
-![](IMG-20260809125310543.png)
+![](IMG-20260810092856597.png)
 
 现在 2D 纹理的透明区域会与已经绘制完成的天空盒正确混合，不再显示 Clear Color。
 
@@ -217,9 +217,9 @@ void Scene::RenderSprites(const glm::mat4& viewProjection)
 
 完成 2D 顺序修复后，又对 3D 模型的透明渲染进行了验证。
 
-![](IMG-20260809130307007.png)
+![](IMG-20260810092856605.png)
 
-![](IMG-20260809130343739.png)
+![](IMG-20260810092856614.png)
 
 ### 3D纹理贴图支持
 
@@ -267,7 +267,7 @@ float outputAlpha =
 
 Opaque 关闭混合、开启深度写入，并可以参与 Instancing 合批。
 
-![](IMG-20260809140123039.png "OPAQUE 与 BLEND 的区别。OPAQUE 忽略纹理中的 Alpha；BLEND 使用连续 Alpha 与背景进行混合")
+![](IMG-20260810092856620.png "OPAQUE 与 BLEND 的区别。OPAQUE 忽略纹理中的 Alpha；BLEND 使用连续 Alpha 与背景进行混合")
 
 ### Mask
 
@@ -285,7 +285,7 @@ Alpha 小于 `AlphaCutoff` 的片元被直接丢弃，不写入颜色、深度�
 
 Mask 不产生半透明过渡，但仍然可以写入深度，并保留不透明队列的排序和 Instancing 优势。
 
-![](IMG-20260809140202234.png "MASK 模式下不同 AlphaCutoff 的效果。阈值越大，被丢弃的片元越多；最终结果只有完全显示和完全透明两种状态")
+![](IMG-20260810092856624.png "MASK 模式下不同 AlphaCutoff 的效果。阈值越大，被丢弃的片元越多；最终结果只有完全显示和完全透明两种状态")
 
 ### Blend
 

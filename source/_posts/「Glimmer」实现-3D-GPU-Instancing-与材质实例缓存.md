@@ -1,5 +1,5 @@
 ---
-title: Glimmer中实现 3D GPU Instancing 与材质实例缓存
+title: 「Glimmer」实现 3D GPU Instancing 与材质实例缓存
 cover: cover_1eddf29f.png
 top_img: false
 toc: true
@@ -43,7 +43,7 @@ GPU Instancing 的目标是将兼容对象合并到同一次绘制调用中：�
 
 ![](cover_1eddf29f.png "1000个cube测试")
 
-![](IMG-20260809151251232.png "最终的2500实体压力测试，可见拆分成了三批")
+![](IMG-20260810092856512.png "最终的2500实体压力测试，可见拆分成了三批")
 
 ## GPU Instancing的基本原理
 
