@@ -40,6 +40,12 @@ device: Windows
 
 ![图片说明](example.png)
 
+连续写入 2–9 张 Markdown 图片时，会在当前位置自动排成九宫格：
+
+![](图片1.png)
+![](图片2.png)
+![](图片3.png)
+
 正文中的单曲和歌单（可像图片一样放在需要出现的位置）：
 
 {% music 28762386 %}
@@ -52,5 +58,6 @@ device: Windows
 - 正文也支持与文章相同的 `{% music 单曲ID %}` 和 `{% music_playlist 歌单ID %}` 标签，便于控制播放器位置或插入多首音乐。
 - Front Matter 与正文音乐标签同时存在时会各自渲染，通常选用其中一种。
 - `images` 最多展示九张，点击图片时使用 Butterfly 灯箱查看。
+- 正文中连续的 2–9 张 Markdown 图片会自动组成原位九宫格；单张图片仍按普通正文图片显示。
 - 构建时同名目录中的文件会自动发布到 `/shuoshuo/assets/<文件名>/`，无需在 Markdown 中填写该路径。
 - 说说按置顶状态和发布时间倒序排列，默认每页展示 20 条；可通过 `_config.yml` 中的 `shuoshuo.per_page` 调整。

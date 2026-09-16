@@ -70,11 +70,46 @@ const renderImages = (images, talk, root) => {
     .map(source => assetUrl(root, talk, source));
   if (!sources.length) return '';
 
-  const items = sources.map((src, index) =>
-    `<img class="shuoshuo-gallery__image" src="${escapeHtml(src)}" alt="说说图片 ${index + 1}" loading="lazy" decoding="async">`
-  ).join('');
+  const items = sources.map(src => {
+    const escapedSource = escapeHtml(src);
+    return `<img class="shuoshuo-gallery__image" src="${escapedSource}" data-zoom-src="${escapedSource}" alt="" loading="lazy" decoding="async">`;
+  }).join('');
 
   return `<div class="shuoshuo-gallery shuoshuo-gallery--${sources.length}" data-gallery="${escapeHtml(talk.id)}">${items}</div>`;
+};
+
+const parseMarkdownImage = line => {
+  const match = String(line).match(/^\s*!\[[^\]]*\]\(\s*(?:<([^>]+)>|([^\s)]+))(?:\s+["'][^"']*["'])?\s*\)\s*$/);
+  return match ? (match[1] || match[2]) : '';
+};
+
+const renderInlineGalleries = (content, talk, root) => {
+  const lines = String(content || '').split('\n');
+  const output = [];
+
+  for (let index = 0; index < lines.length;) {
+    const images = [];
+    let end = index;
+
+    while (end < lines.length) {
+      const source = parseMarkdownImage(lines[end]);
+      if (!source) break;
+      images.push({ source, line: lines[end] });
+      end += 1;
+    }
+
+    if (images.length < 2) {
+      output.push(lines[index]);
+      index += 1;
+      continue;
+    }
+
+    output.push('', renderImages(images.slice(0, 9).map(image => image.source), talk, root), '');
+    output.push(...images.slice(9).map(image => image.line));
+    index = end;
+  }
+
+  return output.join('\n');
 };
 
 const renderLabels = (items, icon) => asArray(items)
@@ -100,7 +135,8 @@ const renderCard = (hexo, talk) => {
     : '日期未知';
   const author = talk.author || hexo.config.author || 'Author';
   const avatar = talk.avatar || '/img/avatar.png';
-  const content = hexo.render.renderSync({ text: renderInlineMusic(talk._content), engine: 'markdown' })
+  const preparedContent = renderInlineMusic(renderInlineGalleries(talk._content, talk, root));
+  const content = hexo.render.renderSync({ text: preparedContent, engine: 'markdown' })
     .replace(/(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi, (_, start, source, end) =>
       `${start}${escapeHtml(assetUrl(root, talk, source))}${end}`
     );

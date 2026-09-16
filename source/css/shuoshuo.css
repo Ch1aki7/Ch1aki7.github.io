@@ -129,6 +129,10 @@
   border-radius: 12px;
 }
 
+#shuoshuo-page .shuoshuo-card__content .shuoshuo-gallery {
+  margin: 0.8em 0 0;
+}
+
 #shuoshuo-page .shuoshuo-gallery--1 {
   grid-template-columns: minmax(0, 1fr);
 }
@@ -169,6 +173,12 @@
   margin: 0;
   object-fit: cover;
   transition: transform 0.25s ease;
+}
+
+.shuoshuo-gallery__image.medium-zoom-image--opened {
+  height: auto !important;
+  aspect-ratio: auto;
+  object-fit: contain !important;
 }
 
 #shuoshuo-page .shuoshuo-gallery > a:hover .shuoshuo-gallery__image {
