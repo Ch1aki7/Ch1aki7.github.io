@@ -16,7 +16,7 @@ keywords: Unity, ParticleSystem, 序列帧, 图集, 特效烘焙, VFX Baker, 性
 ---
 
 {% note info %}
-完整源码、使用说明及最新版本请参见：[Unity-VFX-Baker](https://github.com/Ch1aki7/Unity-VFX-Baker)
+完整源码、使用说明及最新版本请参见：<i class="fa-brands fa-github"></i>[Unity-VFX-Baker](https://github.com/Ch1aki7/Unity-VFX-Baker)
 {% endnote %}
 
 ## 写在前面
