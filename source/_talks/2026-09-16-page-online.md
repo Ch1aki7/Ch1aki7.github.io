@@ -3,8 +3,8 @@ date: 2026-09-16 18:00:00
 tags:
   - 站点更新
 music:
- type: song
- id: 38019596
+  type: song
+  id: 38019596
 location: Beijing
 device: Windows
 ---

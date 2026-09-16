@@ -31,7 +31,10 @@ const readTalks = sourceDir => {
   return fs.readdirSync(directory)
     .filter(file => /\.md$/i.test(file) && file.toLowerCase() !== 'readme.md')
     .map(file => {
-      const talk = frontMatter.parse(fs.readFileSync(path.join(directory, file), 'utf8'));
+      const source = fs.readFileSync(path.join(directory, file), 'utf8')
+        .replace(/^\uFEFF/, '')
+        .replace(/\r\n?/g, '\n');
+      const talk = frontMatter.parse(source);
       const date = new Date(talk.date);
       return {
         ...talk,

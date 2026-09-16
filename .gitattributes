@@ -1,0 +1,2 @@
+# Hexo front matter and the local talk parser expect LF-delimited Markdown.
+source/_talks/*.md text eol=lf
