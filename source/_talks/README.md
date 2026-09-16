@@ -39,11 +39,18 @@ device: Windows
 正文中的图片：
 
 ![图片说明](example.png)
+
+正文中的单曲和歌单（可像图片一样放在需要出现的位置）：
+
+{% music 28762386 %}
+{% music_playlist 18377839332 %}
 ```
 
 - `date` 为必填项，用于排序和显示时间。
 - `pinned`、`tags`、`images`、`music`、`location` 和 `device` 均为可选项。
 - `music.type` 支持 `song` 和 `playlist`，`id` 填写网易云音乐 ID。
+- 正文也支持与文章相同的 `{% music 单曲ID %}` 和 `{% music_playlist 歌单ID %}` 标签，便于控制播放器位置或插入多首音乐。
+- Front Matter 与正文音乐标签同时存在时会各自渲染，通常选用其中一种。
 - `images` 最多展示九张，点击图片时使用 Butterfly 灯箱查看。
 - 构建时同名目录中的文件会自动发布到 `/shuoshuo/assets/<文件名>/`，无需在 Markdown 中填写该路径。
 - 说说按置顶状态和发布时间倒序排列，默认每页展示 20 条；可通过 `_config.yml` 中的 `shuoshuo.per_page` 调整。

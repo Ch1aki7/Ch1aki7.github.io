@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const frontMatter = require('hexo-front-matter');
+const yaml = require('js-yaml');
+const moment = require('moment-timezone');
 const { renderMusic } = require('./inline-music');
 
 const EMPTY = '<div class="shuoshuo-empty">还没有发布说说。</div>';
@@ -15,6 +17,20 @@ const escapeHtml = value => String(value ?? '')
 const asArray = value => value ? (Array.isArray(value) ? value : [value]) : [];
 const isExternalUrl = value => /^(?:[a-z][a-z\d+.-]*:|\/\/|\/|#)/i.test(value);
 
+const parseDate = (value, timezone) => {
+  if (value instanceof Date) return value;
+
+  const source = String(value || '').trim();
+  if (!source) return new Date(NaN);
+
+  const hasExplicitTimezone = /(?:z|[+-]\d{2}:?\d{2})$/i.test(source);
+  const parsed = hasExplicitTimezone
+    ? moment.parseZone(source)
+    : moment.tz(source, timezone);
+
+  return parsed.isValid() ? parsed.toDate() : new Date(NaN);
+};
+
 const assetUrl = (root, talk, source) => {
   if (!source || isExternalUrl(source)) return source;
 
@@ -24,7 +40,7 @@ const assetUrl = (root, talk, source) => {
   return `${root}shuoshuo/assets/${encodeURIComponent(talk.id)}/${encodedPath}`;
 };
 
-const readTalks = sourceDir => {
+const readTalks = (sourceDir, timezone = 'Asia/Shanghai') => {
   const directory = path.join(sourceDir, '_talks');
   if (!fs.existsSync(directory)) return [];
 
@@ -34,8 +50,10 @@ const readTalks = sourceDir => {
       const source = fs.readFileSync(path.join(directory, file), 'utf8')
         .replace(/^\uFEFF/, '')
         .replace(/\r\n?/g, '\n');
-      const talk = frontMatter.parse(source);
-      const date = new Date(talk.date);
+      // JSON_SCHEMA keeps YAML timestamps as strings so the build machine's
+      // local timezone cannot silently change the published instant.
+      const talk = frontMatter.parse(source, { schema: yaml.JSON_SCHEMA });
+      const date = parseDate(talk.date, timezone);
       return {
         ...talk,
         id: path.basename(file, path.extname(file)),
@@ -64,6 +82,11 @@ const renderLabels = (items, icon) => asArray(items)
   .map(item => `<span><i class="fa-solid fa-${icon}"></i> ${escapeHtml(item)}</span>`)
   .join('');
 
+const renderInlineMusic = content => String(content || '').replace(
+  /{%\s*(music|music_playlist)\s+(\d+)\s*%}/g,
+  (_, tag, id) => renderMusic(id, tag === 'music_playlist' ? 'playlist' : 'song')
+);
+
 const renderCard = (hexo, talk) => {
   const root = String(hexo.config.root || '/').replace(/\/?$/, '/');
   const validDate = talk.timestamp > 0;
@@ -77,7 +100,7 @@ const renderCard = (hexo, talk) => {
     : '日期未知';
   const author = talk.author || hexo.config.author || 'Author';
   const avatar = talk.avatar || '/img/avatar.png';
-  const content = hexo.render.renderSync({ text: talk._content || '', engine: 'markdown' })
+  const content = hexo.render.renderSync({ text: renderInlineMusic(talk._content), engine: 'markdown' })
     .replace(/(<img\b[^>]*\bsrc=["'])([^"']+)(["'])/gi, (_, start, source, end) =>
       `${start}${escapeHtml(assetUrl(root, talk, source))}${end}`
     );
@@ -92,7 +115,7 @@ const renderCard = (hexo, talk) => {
       <span class="shuoshuo-item__dot" aria-hidden="true"></span>
       <div class="shuoshuo-card">
         <header class="shuoshuo-card__header">
-          <img class="shuoshuo-card__avatar no-lightbox" src="${escapeHtml(avatar)}" alt="${escapeHtml(author)}">
+          <img class="shuoshuo-card__avatar no-lightbox" src="${escapeHtml(avatar)}" alt="" aria-hidden="true">
           <div class="shuoshuo-card__identity">
             <strong>${escapeHtml(author)}</strong>
             <time${validDate ? ` datetime="${talk.date.toISOString()}"` : ''}>

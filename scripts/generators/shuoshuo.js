@@ -18,7 +18,7 @@ const renderPagination = (root, current, total) => {
 };
 
 hexo.extend.generator.register('local-shuoshuo', () => {
-  const talks = readTalks(hexo.source_dir);
+  const talks = readTalks(hexo.source_dir, hexo.config.timezone || 'Asia/Shanghai');
   const configuredSize = Number(hexo.config.shuoshuo?.per_page);
   const pageSize = Number.isInteger(configuredSize) && configuredSize > 0 ? configuredSize : 20;
   const pageCount = Math.max(1, Math.ceil(talks.length / pageSize));
