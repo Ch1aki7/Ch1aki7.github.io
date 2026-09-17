@@ -40,6 +40,7 @@
     "random4",
     "random5",
   ];
+  const MOTIONS_WITHOUT_EYE_CURVES = new Set(["neutral", "surprise"]);
   const EXPRESSIONS = [
     "anger",
     "joy",
@@ -109,6 +110,7 @@
   let siteInteractionsBound = false;
   let mediaObserver;
   let mediaObserverTimer;
+  let motionRequestId = 0;
   const triggerTimes = new Map();
   const boundAPlayers = new WeakSet();
   const boundAudioElements = new WeakSet();
@@ -153,10 +155,34 @@
     model.internalModel.focusController.focus(focusX, focusY);
   };
 
+  const restoreOpenEyes = () => {
+    const coreModel = model?.internalModel?.coreModel;
+    if (!coreModel) return;
+
+    coreModel.setParameterValueById("ParamEyeLOpen", 1);
+    coreModel.setParameterValueById("ParamEyeROpen", 1);
+    coreModel.setParameterValueById("ParamEyeLSmile", 0);
+    coreModel.setParameterValueById("ParamEyeRSmile", 0);
+    coreModel.saveParameters?.();
+  };
+
   const playMotionDirect = (group, index = 0) => {
     if (!model || !MOTION_GROUPS.includes(group)) return false;
+    const requestId = ++motionRequestId;
     const priority = window.PIXI.live2d.MotionPriority.FORCE;
-    model.motion(group, index, priority);
+    const motionStarted = model.motion(group, index, priority);
+
+    if (MOTIONS_WITHOUT_EYE_CURVES.has(group)) {
+      Promise.resolve(motionStarted)
+        .then(() => {
+          window.requestAnimationFrame(() => {
+            if (requestId === motionRequestId) restoreOpenEyes();
+          });
+        })
+        .catch((error) => {
+          console.warn(`Kurisu Live2D motion "${group}" failed:`, error);
+        });
+    }
     return true;
   };
 
